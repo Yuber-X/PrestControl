@@ -43,6 +43,9 @@
       <DataTemplate DataType="{x:Type vm:ClienteFormViewModel}">
         <views:ClienteFormView />
       </DataTemplate>
+      <DataTemplate DataType="{x:Type vm:PanelViewModel}">
+        <views:PanelView />
+      </DataTemplate>
       <DataTemplate DataType="{x:Type vm:PlaceholderViewModel}">
         <Border Style="{DynamicResource Card}">
           <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

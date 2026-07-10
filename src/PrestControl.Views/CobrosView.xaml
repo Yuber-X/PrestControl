@@ -88,7 +88,8 @@
                   <Style TargetType="TextBlock" BasedOn="{StaticResource Texto.MontoTotal}" />
                 </DataGridTextColumn.ElementStyle>
               </DataGridTextColumn>
-              <DataGridTemplateColumn Header="Estado" Width="100">
+              <DataGridTemplateColumn Header="Estado" Width="100"
+                                      HeaderStyle="{StaticResource Tabla.Encabezado.Izquierda}">
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate>
                     <Border Style="{DynamicResource Pill.Semaforo}">
@@ -107,7 +108,8 @@
     <!-- ============ DERECHA: captura del pago ============ -->
     <Border Grid.Row="0" Grid.Column="1" Style="{DynamicResource Card}" Padding="20"
             VerticalAlignment="Stretch">
-      <ScrollViewer VerticalScrollBarVisibility="Auto">
+      <!-- Padding derecho: aire entre los inputs y el scrollbar -->
+      <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,12,0">
         <StackPanel IsEnabled="{Binding TienePrestamo}">
           <TextBlock Text="Registrar pago" Style="{DynamicResource Texto.Titulo3}"
                      Margin="0,0,0,14" />
@@ -201,7 +203,8 @@
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn Header="Fecha" Binding="{Binding FechaTexto}" Width="150" />
-            <DataGridTextColumn Header="Cliente" Binding="{Binding ClienteNombre}" Width="*" />
+            <DataGridTextColumn Header="Cliente" Binding="{Binding ClienteNombre}" Width="*"
+                                HeaderStyle="{StaticResource Tabla.Encabezado.Izquierda}" />
             <DataGridTextColumn Header="Préstamo" Binding="{Binding PrestamoCodigo}" Width="90" />
             <DataGridTextColumn Header="Cuota" Binding="{Binding CuotaTexto}" Width="80" />
             <DataGridTextColumn Header="Monto"

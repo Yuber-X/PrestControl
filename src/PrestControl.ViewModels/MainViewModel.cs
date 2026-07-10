@@ -31,11 +31,15 @@ public partial class MainViewModel : ObservableObject
     private readonly ClientesViewModel _clientesVm;
     private readonly ClienteFichaViewModel _fichaVm;
     private readonly ClienteFormViewModel _clienteFormVm;
+    private readonly PanelViewModel _panelVm;
 
     public MainViewModel(PrestamosViewModel prestamosVm, PrestamoNuevoViewModel nuevoVm,
         PrestamoDetalleViewModel detalleVm, CobrosViewModel cobrosVm,
-        ClientesViewModel clientesVm, ClienteFichaViewModel fichaVm, ClienteFormViewModel clienteFormVm)
+        ClientesViewModel clientesVm, ClienteFichaViewModel fichaVm, ClienteFormViewModel clienteFormVm,
+        PanelViewModel panelVm)
     {
+        _panelVm = panelVm;
+        _panelVm.CobrarSolicitado += id => _ = AbrirCobrosAsync(id);
         _prestamosVm = prestamosVm;
         _nuevoVm = nuevoVm;
         _detalleVm = detalleVm;
@@ -99,6 +103,10 @@ public partial class MainViewModel : ObservableObject
 
             switch (destino)
             {
+                case Pagina.Panel:
+                    await _panelVm.CargarAsync();
+                    PaginaActualVm = _panelVm;
+                    break;
                 case Pagina.Clientes:
                     await _clientesVm.CargarAsync();
                     PaginaActualVm = _clientesVm;

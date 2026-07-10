@@ -89,6 +89,7 @@ public partial class App : Application
         servicios.AddSingleton<PrestamoRepository>();
         servicios.AddSingleton<PagoRepository>();
         servicios.AddSingleton<ContadorRepository>();
+        servicios.AddSingleton<DashboardRepository>();
 
         // Services
         servicios.AddSingleton<AuditoriaService>();
@@ -97,6 +98,7 @@ public partial class App : Application
         servicios.AddSingleton<ClienteService>();
         servicios.AddSingleton<PrestamoService>();
         servicios.AddSingleton<PagoService>();
+        servicios.AddSingleton<DashboardService>();
         servicios.AddSingleton<PrestControl.Common.IDialogService, DialogService>();
 
         // ViewModels
@@ -108,6 +110,7 @@ public partial class App : Application
         servicios.AddSingleton<PrestamoNuevoViewModel>();
         servicios.AddSingleton<PrestamoDetalleViewModel>();
         servicios.AddSingleton<CobrosViewModel>();
+        servicios.AddSingleton<PanelViewModel>();
         servicios.AddSingleton<MainViewModel>();
 
         // Views

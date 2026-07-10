@@ -46,8 +46,13 @@
 - [x] Recibo 80mm como visual WPF (patrón imagen POS-400): vista previa + impresión (PrintVisual) + PDF (PdfSharp)
 - [x] Tests de integración contra `prestcontrol_test`: flujo completo crear → abonar → adelantar → liquidar; cancelación
 
-## ⏳ Fases 5, 6, 7 (pendientes)
-- [ ] Fase 5: Dashboard con KPIs + LiveChartsCore
+## ✅ Fase 5 — Dashboard (COMPLETA)
+- [x] 4 KPIs: capital colocado, cobros del mes (delta vs mes anterior), clientes activos, morosidad RD$ + %
+- [x] Panel de alertas de cobro con semáforo y botón "Cobrar" → Cobros preseleccionado
+- [x] Gráfico de cobros diarios del mes (LiveChartsCore 2.0.5)
+- [x] Últimos movimientos (10 pagos recientes)
+
+## ⏳ Fases 6, 7 (pendientes)
 - [ ] Fase 6: 6 reportes + Historial auditoría + Configuración (cambio password, respaldo mysqldump)
 - [ ] Fase 6 · Configuración — **pedidos de Yuber 2026-07-10** (ver `Claude Active/PrestaControl/Nuevos detalles a agregar.txt`):
   - [ ] Tamaño de texto configurable: Pequeño / Mediano / Grande (escala tipográfica global; el usuario percibe las letras muy pequeñas)

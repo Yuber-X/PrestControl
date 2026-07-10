@@ -150,7 +150,8 @@
               <Style TargetType="TextBlock" BasedOn="{StaticResource Texto.Monto}" />
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
-          <DataGridTemplateColumn Header="Estado" Width="*">
+          <DataGridTemplateColumn Header="Estado" Width="*"
+                                  HeaderStyle="{StaticResource Tabla.Encabezado.Izquierda}">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
                 <Border Style="{DynamicResource Pill.Semaforo}">

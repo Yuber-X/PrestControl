@@ -2,6 +2,22 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/1.0.0/). Fechas en hora de República Dominicana.
 
+## [0.4.0] — 2026-07-10 · Fase 5 (Dashboard) + ajustes finos de UI
+
+### Added
+- **Panel de control** (pantalla de inicio real): 4 KPIs — Capital colocado (saldo por cobrar de activos), Cobros del mes con **delta vs mes anterior** (↑/↓ %), Clientes activos, Morosidad en RD$ y % del capital.
+- **Panel de alertas de cobro** (60%): cuotas vencidas, en mora o que vencen en ≤ 7 días, con pill de semáforo y botón **Cobrar** que navega directo a Cobros con el préstamo preseleccionado.
+- **Gráfico de cobros diarios** del mes en curso (LiveChartsCore 2.0.5, barras indigo redondeadas, días sin cobros en 0).
+- **Últimos movimientos**: los 10 pagos más recientes.
+- `DashboardRepository`/`DashboardService`: agregados en una sola pasada; límites de mes calculados en hora de negocio RD (UTC-4) y convertidos a UTC.
+
+### Changed (ajustes finos pedidos por Yuber)
+- Encabezados "Estado", "Nombre" (Clientes) y "Cliente" (Cobros) alineados a la izquierda; el resto sigue centrado.
+- Columnas de acciones más anchas: "Ver detalle" y "Ver ficha" ya no se cortan.
+- ComboBox: texto centrado verticalmente en toda la app.
+- Formularios de Nuevo préstamo y Registrar pago: aire de 12px entre los inputs y el scrollbar.
+- App y Views ahora apuntan a `net8.0-windows10.0.19041.0` (asset moderno de SkiaSharp, sin warnings NU1701).
+
 ## [0.3.1] — 2026-07-10 · Pulido de UI (10 observaciones de Yuber)
 
 ### Added

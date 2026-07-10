@@ -198,6 +198,13 @@
     </Setter>
   </Style>
 
+  <!-- ComboBox implícito: texto centrado verticalmente en toda la app -->
+  <Style TargetType="ComboBox">
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="FontFamily" Value="{StaticResource Fuente.Interfaz}" />
+    <Setter Property="Padding" Value="10,0" />
+  </Style>
+
   <!-- ============================================================
        ScrollBars delgados (6px) para TODA la app: discretos pero
        funcionales — pedido de Yuber 2026-07-10 (punto 4)
@@ -335,6 +342,13 @@
     <Setter Property="Padding" Value="12,8" />
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="HorizontalContentAlignment" Value="Center" />
+  </Style>
+
+  <!-- Variante alineada a la izquierda: columnas de texto largo
+       (Estado, Nombre, Cliente) — pedido de Yuber 2026-07-10 -->
+  <Style x:Key="Tabla.Encabezado.Izquierda" TargetType="DataGridColumnHeader"
+         BasedOn="{StaticResource Tabla.Encabezado}">
+    <Setter Property="HorizontalContentAlignment" Value="Left" />
   </Style>
 
   <Style x:Key="Tabla.Celda" TargetType="DataGridCell">

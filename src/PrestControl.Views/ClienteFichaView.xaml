@@ -151,7 +151,8 @@
               </DataGridTextColumn.ElementStyle>
             </DataGridTextColumn>
             <DataGridTextColumn Header="Próx. venc." Binding="{Binding ProximoVencimientoTexto}" Width="100" />
-            <DataGridTemplateColumn Header="Estado" Width="*">
+            <DataGridTemplateColumn Header="Estado" Width="*"
+                                    HeaderStyle="{StaticResource Tabla.Encabezado.Izquierda}">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
                   <Border Style="{DynamicResource Pill.EstadoPrestamo}">
@@ -161,7 +162,7 @@
                 </DataTemplate>
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
-            <DataGridTemplateColumn Width="90">
+            <DataGridTemplateColumn Width="120">
               <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
                   <Button Content="Ver detalle" Style="{DynamicResource Boton.Terciario}"

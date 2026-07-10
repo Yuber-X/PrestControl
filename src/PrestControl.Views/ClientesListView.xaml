@@ -38,7 +38,8 @@
               </Style>
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
-          <DataGridTextColumn Header="Nombre" Binding="{Binding NombreCompleto}" Width="*" />
+          <DataGridTextColumn Header="Nombre" Binding="{Binding NombreCompleto}" Width="*"
+                              HeaderStyle="{StaticResource Tabla.Encabezado.Izquierda}" />
           <DataGridTextColumn Header="Teléfono" Binding="{Binding TelefonoTexto}" Width="130" />
           <DataGridTextColumn Header="Préstamos activos" Binding="{Binding PrestamosActivos}" Width="130">
             <DataGridTextColumn.ElementStyle>
@@ -54,7 +55,7 @@
               <Style TargetType="TextBlock" BasedOn="{StaticResource Texto.Monto}" />
             </DataGridTextColumn.ElementStyle>
           </DataGridTextColumn>
-          <DataGridTemplateColumn Width="90">
+          <DataGridTemplateColumn Width="110">
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate>
                 <Button Content="Ver ficha" Style="{DynamicResource Boton.Terciario}"
