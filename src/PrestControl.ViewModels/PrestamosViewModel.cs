@@ -22,12 +22,25 @@ public partial class PrestamosViewModel : ObservableObject
     {
         _servicio = servicio;
         _dialogos = dialogos;
+
+        FiltrosEstado =
+        [
+            new Opcion<EstadoPrestamo?>(null, "Todos los estados"),
+            new Opcion<EstadoPrestamo?>(EstadoPrestamo.Activo, "Activos"),
+            new Opcion<EstadoPrestamo?>(EstadoPrestamo.Pagado, "Pagados"),
+            new Opcion<EstadoPrestamo?>(EstadoPrestamo.Cancelado, "Cancelados")
+        ];
+        _filtroEstado = FiltrosEstado[0];
     }
 
     public ObservableCollection<PrestamoFila> Filas { get; } = [];
+    public IReadOnlyList<Opcion<EstadoPrestamo?>> FiltrosEstado { get; }
 
     [ObservableProperty]
     private string _textoBusqueda = string.Empty;
+
+    [ObservableProperty]
+    private Opcion<EstadoPrestamo?> _filtroEstado;
 
     [ObservableProperty]
     private bool _cargando;
@@ -35,7 +48,15 @@ public partial class PrestamosViewModel : ObservableObject
     [ObservableProperty]
     private string _contadorTexto = string.Empty;
 
+    // Totales del grid (se recalculan con cada búsqueda/filtro):
+    // el usuario nunca debería necesitar una calculadora
+    [ObservableProperty] private decimal _totalCapital;
+    [ObservableProperty] private decimal _totalPorCobrar;
+    [ObservableProperty] private decimal _totalCobrado;
+    [ObservableProperty] private int _totalActivos;
+
     partial void OnTextoBusquedaChanged(string value) => AplicarFiltro();
+    partial void OnFiltroEstadoChanged(Opcion<EstadoPrestamo?> value) => AplicarFiltro();
 
     public async Task CargarAsync()
     {
@@ -59,15 +80,21 @@ public partial class PrestamosViewModel : ObservableObject
     private void AplicarFiltro()
     {
         var filtro = TextoBusqueda.Trim();
-        var visibles = string.IsNullOrEmpty(filtro)
-            ? _todos
-            : _todos.Where(p =>
+        var visibles = _todos
+            .Where(p => FiltroEstado.Valor is null || p.Estado == FiltroEstado.Valor)
+            .Where(p => string.IsNullOrEmpty(filtro) ||
                 p.Codigo.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
-                p.ClienteNombre.Contains(filtro, StringComparison.OrdinalIgnoreCase)).ToList();
+                p.ClienteNombre.Contains(filtro, StringComparison.OrdinalIgnoreCase))
+            .ToList();
 
         Filas.Clear();
         foreach (var resumen in visibles)
             Filas.Add(new PrestamoFila(resumen));
+
+        TotalCapital = visibles.Sum(p => p.MontoCapital);
+        TotalPorCobrar = visibles.Where(p => p.Estado == EstadoPrestamo.Activo).Sum(p => p.SaldoPendiente);
+        TotalCobrado = visibles.Sum(p => p.TotalPagado);
+        TotalActivos = visibles.Count(p => p.Estado == EstadoPrestamo.Activo);
 
         ContadorTexto = _todos.Count == 0
             ? "Sin préstamos registrados"

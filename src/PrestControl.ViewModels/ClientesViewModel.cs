@@ -20,6 +20,15 @@ public record ClienteFila(ClienteResumen Resumen)
     public bool AlDia => Resumen.PrestamosActivos == 0 || Resumen.SaldoPendiente == 0m;
 }
 
+/// <summary>Criterio del filtro rápido de la lista de clientes.</summary>
+public enum FiltroCliente
+{
+    Todos,
+    ConPrestamosActivos,
+    SinPrestamosActivos,
+    ConSaldoPendiente
+}
+
 /// <summary>Lista de clientes con búsqueda por nombre, cédula o teléfono.</summary>
 public partial class ClientesViewModel : ObservableObject
 {
@@ -34,17 +43,31 @@ public partial class ClientesViewModel : ObservableObject
     {
         _servicio = servicio;
         _dialogos = dialogos;
+
+        Filtros =
+        [
+            new Opcion<FiltroCliente>(FiltroCliente.Todos, "Todos"),
+            new Opcion<FiltroCliente>(FiltroCliente.ConPrestamosActivos, "Con préstamos activos"),
+            new Opcion<FiltroCliente>(FiltroCliente.SinPrestamosActivos, "Sin préstamos activos"),
+            new Opcion<FiltroCliente>(FiltroCliente.ConSaldoPendiente, "Con saldo pendiente")
+        ];
+        _filtroSeleccionado = Filtros[0];
     }
 
     public ObservableCollection<ClienteFila> Filas { get; } = [];
+    public IReadOnlyList<Opcion<FiltroCliente>> Filtros { get; }
 
     [ObservableProperty]
     private string _textoBusqueda = string.Empty;
 
     [ObservableProperty]
+    private Opcion<FiltroCliente> _filtroSeleccionado;
+
+    [ObservableProperty]
     private string _contadorTexto = string.Empty;
 
     partial void OnTextoBusquedaChanged(string value) => AplicarFiltro();
+    partial void OnFiltroSeleccionadoChanged(Opcion<FiltroCliente> value) => AplicarFiltro();
 
     public async Task CargarAsync()
     {
@@ -63,12 +86,19 @@ public partial class ClientesViewModel : ObservableObject
     private void AplicarFiltro()
     {
         var filtro = TextoBusqueda.Trim();
-        var visibles = string.IsNullOrEmpty(filtro)
-            ? _todos
-            : _todos.Where(c =>
+        var visibles = _todos
+            .Where(c => FiltroSeleccionado.Valor switch
+            {
+                FiltroCliente.ConPrestamosActivos => c.PrestamosActivos > 0,
+                FiltroCliente.SinPrestamosActivos => c.PrestamosActivos == 0,
+                FiltroCliente.ConSaldoPendiente => c.SaldoPendiente > 0m,
+                _ => true
+            })
+            .Where(c => string.IsNullOrEmpty(filtro) ||
                 c.NombreCompleto.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
                 c.Cedula.Contains(filtro, StringComparison.OrdinalIgnoreCase) ||
-                (c.Telefono?.Contains(filtro, StringComparison.OrdinalIgnoreCase) ?? false)).ToList();
+                (c.Telefono?.Contains(filtro, StringComparison.OrdinalIgnoreCase) ?? false))
+            .ToList();
 
         Filas.Clear();
         foreach (var resumen in visibles)

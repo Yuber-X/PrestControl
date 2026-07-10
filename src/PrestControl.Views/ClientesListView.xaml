@@ -14,10 +14,15 @@
       <Button DockPanel.Dock="Right" Content="+ Nuevo cliente"
               Style="{DynamicResource Boton.Primario}"
               Command="{Binding NuevoCommand}" />
-      <TextBox Width="320" HorizontalAlignment="Left"
-               Style="{DynamicResource Input.Texto}"
-               Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"
-               ToolTip="Buscar por nombre, cédula o teléfono" />
+      <StackPanel Orientation="Horizontal">
+        <TextBox Width="320"
+                 Style="{DynamicResource Input.Texto}"
+                 Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"
+                 ToolTip="Buscar por nombre, cédula o teléfono" />
+        <ComboBox Width="190" Height="40" FontSize="13" Margin="12,0,0,0"
+                  ItemsSource="{Binding Filtros}"
+                  SelectedItem="{Binding FiltroSeleccionado}" />
+      </StackPanel>
     </DockPanel>
 
     <!-- Tabla -->

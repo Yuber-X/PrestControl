@@ -5,23 +5,61 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
-    <!-- Toolbar: búsqueda + Nuevo préstamo -->
-    <DockPanel Grid.Row="0" Margin="0,0,0,16">
+    <!-- Totales del grid: sin calculadora (pedido de Yuber, punto 5) -->
+    <UniformGrid Grid.Row="0" Rows="1" Columns="4" Margin="0,0,0,12">
+      <Border Style="{DynamicResource Card.Metrica}" Margin="0,0,12,0">
+        <StackPanel>
+          <TextBlock Text="CAPITAL PRESTADO" Style="{DynamicResource Texto.MicroLabel}" />
+          <TextBlock Text="{Binding TotalCapital, Converter={StaticResource Money}}"
+                     Style="{DynamicResource Texto.Titulo2}" Margin="0,4,0,0" />
+        </StackPanel>
+      </Border>
+      <Border Style="{DynamicResource Card.Metrica}" Margin="0,0,12,0">
+        <StackPanel>
+          <TextBlock Text="POR COBRAR (ACTIVOS)" Style="{DynamicResource Texto.MicroLabel}" />
+          <TextBlock Text="{Binding TotalPorCobrar, Converter={StaticResource Money}}"
+                     Style="{DynamicResource Texto.Titulo2}" Margin="0,4,0,0" />
+        </StackPanel>
+      </Border>
+      <Border Style="{DynamicResource Card.Metrica}" Margin="0,0,12,0">
+        <StackPanel>
+          <TextBlock Text="TOTAL COBRADO" Style="{DynamicResource Texto.MicroLabel}" />
+          <TextBlock Text="{Binding TotalCobrado, Converter={StaticResource Money}}"
+                     Style="{DynamicResource Texto.Titulo2}" Margin="0,4,0,0" />
+        </StackPanel>
+      </Border>
+      <Border Style="{DynamicResource Card.Metrica}">
+        <StackPanel>
+          <TextBlock Text="PRÉSTAMOS ACTIVOS" Style="{DynamicResource Texto.MicroLabel}" />
+          <TextBlock Text="{Binding TotalActivos}"
+                     Style="{DynamicResource Texto.Titulo2}" Margin="0,4,0,0" />
+        </StackPanel>
+      </Border>
+    </UniformGrid>
+
+    <!-- Toolbar: búsqueda + filtro de estado + Nuevo préstamo -->
+    <DockPanel Grid.Row="1" Margin="0,0,0,16">
       <Button DockPanel.Dock="Right" Content="+ Nuevo préstamo"
               Style="{DynamicResource Boton.Primario}"
               Command="{Binding NuevoCommand}" />
-      <TextBox Width="320" HorizontalAlignment="Left"
-               Style="{DynamicResource Input.Texto}"
-               Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"
-               ToolTip="Buscar por código o cliente" />
+      <StackPanel Orientation="Horizontal">
+        <TextBox Width="320"
+                 Style="{DynamicResource Input.Texto}"
+                 Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"
+                 ToolTip="Buscar por código o cliente" />
+        <ComboBox Width="170" Height="40" FontSize="13" Margin="12,0,0,0"
+                  ItemsSource="{Binding FiltrosEstado}"
+                  SelectedItem="{Binding FiltroEstado}" />
+      </StackPanel>
     </DockPanel>
 
     <!-- Tabla -->
-    <Border Grid.Row="1" Style="{DynamicResource Card}" Padding="0">
+    <Border Grid.Row="2" Style="{DynamicResource Card}" Padding="0">
       <DataGrid Style="{DynamicResource Tabla}"
                 ItemsSource="{Binding Filas}"
                 MouseDoubleClick="Tabla_MouseDoubleClick">
@@ -77,7 +115,7 @@
     </Border>
 
     <!-- Contador de resultados -->
-    <TextBlock Grid.Row="2" Text="{Binding ContadorTexto}"
+    <TextBlock Grid.Row="3" Text="{Binding ContadorTexto}"
                Style="{DynamicResource Texto.Caption}" Margin="4,10,0,0" />
   </Grid>
 </UserControl>

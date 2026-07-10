@@ -2,6 +2,23 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/1.0.0/). Fechas en hora de República Dominicana.
 
+## [0.3.1] — 2026-07-10 · Pulido de UI (10 observaciones de Yuber)
+
+### Added
+- **Totales del grid de Préstamos**: 4 cards (capital prestado, por cobrar en activos, total cobrado, préstamos activos) que se recalculan con cada búsqueda/filtro.
+- **Filtros rápidos**: por estado en Préstamos (Todos/Activos/Pagados/Cancelados) y por situación en Clientes (con/sin préstamos activos, con saldo pendiente).
+- **Iconos en el sidebar** con glifos nativos Segoe MDL2 Assets (sin dependencias).
+
+### Changed
+- El **sidebar refleja la navegación interna**: crear un préstamo te lleva al detalle y ahora marca "Préstamos" (antes quedaba en "Nuevo préstamo").
+- **ScrollBars delgados (6px)** en toda la app, con thumb redondeado y hover — discretos pero funcionales.
+- **Encabezados de tabla centrados** y **scroll horizontal** en las tablas cuando las columnas no caben (el usuario también puede redimensionar columnas).
+- La ventana principal abre **maximizada** por defecto.
+- Botón de cerrar sesión ahora es **circular** con hover indigo.
+
+### Pendiente registrado
+- Documentación final detallada y fácil de entender → Fase 7. Filtros del Historial → Fase 6.
+
 ## [0.3.0] — 2026-07-10 · Fase 2 (Clientes) + ajustes de UI
 
 ### Added

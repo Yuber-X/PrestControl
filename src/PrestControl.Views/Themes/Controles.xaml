@@ -199,6 +199,93 @@
   </Style>
 
   <!-- ============================================================
+       ScrollBars delgados (6px) para TODA la app: discretos pero
+       funcionales — pedido de Yuber 2026-07-10 (punto 4)
+       ============================================================ -->
+  <Style x:Key="Scroll.Pagina" TargetType="RepeatButton">
+    <Setter Property="IsTabStop" Value="False" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="RepeatButton">
+          <Border Background="Transparent" />
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="Scroll.Pulgar" TargetType="Thumb">
+    <Setter Property="IsTabStop" Value="False" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Thumb">
+          <Border x:Name="Fondo" Background="{DynamicResource Brush.BordeEstandar}"
+                  CornerRadius="3" />
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Fondo" Property="Background"
+                      Value="{DynamicResource Brush.TextoTerciario}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- Implícito: aplica a todos los ScrollViewer (formularios, tablas, combos) -->
+  <Style TargetType="ScrollBar">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Width" Value="6" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ScrollBar">
+          <Grid Background="Transparent">
+            <Track x:Name="PART_Track" IsDirectionReversed="True">
+              <Track.DecreaseRepeatButton>
+                <RepeatButton Style="{StaticResource Scroll.Pagina}"
+                              Command="ScrollBar.PageUpCommand" />
+              </Track.DecreaseRepeatButton>
+              <Track.Thumb>
+                <Thumb Style="{StaticResource Scroll.Pulgar}" />
+              </Track.Thumb>
+              <Track.IncreaseRepeatButton>
+                <RepeatButton Style="{StaticResource Scroll.Pagina}"
+                              Command="ScrollBar.PageDownCommand" />
+              </Track.IncreaseRepeatButton>
+            </Track>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="Orientation" Value="Horizontal">
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Height" Value="6" />
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ScrollBar">
+              <Grid Background="Transparent">
+                <Track x:Name="PART_Track" IsDirectionReversed="False">
+                  <Track.DecreaseRepeatButton>
+                    <RepeatButton Style="{StaticResource Scroll.Pagina}"
+                                  Command="ScrollBar.PageLeftCommand" />
+                  </Track.DecreaseRepeatButton>
+                  <Track.Thumb>
+                    <Thumb Style="{StaticResource Scroll.Pulgar}" />
+                  </Track.Thumb>
+                  <Track.IncreaseRepeatButton>
+                    <RepeatButton Style="{StaticResource Scroll.Pagina}"
+                                  Command="ScrollBar.PageRightCommand" />
+                  </Track.IncreaseRepeatButton>
+                </Track>
+              </Grid>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <!-- ============================================================
        Navegación del sidebar (RadioButton para exclusión mutua)
        ============================================================ -->
   <Style x:Key="Sidebar.Item" TargetType="RadioButton">
@@ -212,7 +299,12 @@
       <Setter.Value>
         <ControlTemplate TargetType="RadioButton">
           <Border x:Name="Fondo" Background="Transparent" CornerRadius="8" Padding="12,0">
-            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" />
+            <!-- Ícono opcional en Tag (glifo Segoe MDL2 Assets, nativo de Windows) -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+              <TextBlock Text="{TemplateBinding Tag}" FontFamily="Segoe MDL2 Assets"
+                         FontSize="15" VerticalAlignment="Center" Margin="0,0,10,0" />
+              <ContentPresenter VerticalAlignment="Center" />
+            </StackPanel>
           </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
@@ -242,7 +334,7 @@
     <Setter Property="Typography.Capitals" Value="AllSmallCaps" />
     <Setter Property="Padding" Value="12,8" />
     <Setter Property="BorderThickness" Value="0" />
-    <Setter Property="HorizontalContentAlignment" Value="Left" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
   </Style>
 
   <Style x:Key="Tabla.Celda" TargetType="DataGridCell">
@@ -300,7 +392,9 @@
     <Setter Property="CellStyle" Value="{StaticResource Tabla.Celda}" />
     <Setter Property="RowStyle" Value="{StaticResource Tabla.Fila}" />
     <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
-    <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
+    <!-- Scroll horizontal: si las columnas no caben, se desplaza en vez de recortar -->
+    <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+    <Setter Property="CanUserResizeColumns" Value="True" />
   </Style>
 
   <!-- ============================================================

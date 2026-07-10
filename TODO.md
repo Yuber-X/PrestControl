@@ -53,7 +53,9 @@
   - [ ] Tamaño de texto configurable: Pequeño / Mediano / Grande (escala tipográfica global; el usuario percibe las letras muy pequeñas)
   - [ ] Exportar/Importar TODOS los datos (clientes, préstamos, cuotas, pagos, historial) a Excel para migrar de PC
   - [ ] Export automático a Excel con lapso ajustable (default mensual), con switch activar/desactivar en Configuración
+- [ ] Fase 6: Historial con filtros por fecha, entidad y acción (pedido de Yuber: igual que Préstamos/Clientes)
 - [ ] Fase 7: Instalador (Inno Setup) + INSTALL.md + manual de usuario
+- [ ] Fase 7: **Documentación final detallada e increíblemente fácil de entender** (pedido explícito de Yuber 2026-07-10): guía de uso pantalla por pantalla con capturas, en lenguaje no técnico
 - [ ] Logout que regrese al login sin cerrar la app (hoy cierra la app — decisión pendiente)
 - [ ] Empaquetar fuente Inter .ttf (hoy usa fallback Segoe UI)
 - [ ] Sidebar: marcar el ítem activo cuando la navegación no viene de un click (detalle/nuevo)

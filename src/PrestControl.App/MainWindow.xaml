@@ -4,6 +4,7 @@
         xmlns:vm="clr-namespace:PrestControl.ViewModels;assembly=PrestControl.ViewModels"
         Title="PrestControl — Gestión de préstamos"
         Width="1280" Height="760"
+        WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource Brush.FondoApp}">
 
@@ -35,9 +36,24 @@
                 BorderThickness="0,0.5,0,0" Padding="20,14">
           <DockPanel>
             <Button DockPanel.Dock="Right" Content="⏻" FontSize="14" Width="28" Height="28"
-                    Background="Transparent" BorderThickness="0" Cursor="Hand"
-                    Foreground="{DynamicResource Brush.TextoTerciario}"
-                    ToolTip="Cerrar sesión" Click="BotonSalir_Click" />
+                    Cursor="Hand" Foreground="{DynamicResource Brush.TextoTerciario}"
+                    ToolTip="Cerrar sesión" Click="BotonSalir_Click">
+              <Button.Template>
+                <!-- Circular, no cuadrado (pedido de Yuber 2026-07-10, punto 10) -->
+                <ControlTemplate TargetType="Button">
+                  <Border x:Name="Fondo" CornerRadius="14" Background="Transparent">
+                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                  </Border>
+                  <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                      <Setter TargetName="Fondo" Property="Background"
+                              Value="{DynamicResource Brush.PrimarioSutil}" />
+                      <Setter Property="Foreground" Value="{DynamicResource Brush.Primario}" />
+                    </Trigger>
+                  </ControlTemplate.Triggers>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
             <Border Width="32" Height="32" CornerRadius="16"
                     Background="{DynamicResource Brush.PrimarioSutil}">
               <TextBlock Text="{Binding Iniciales}" FontSize="11" FontWeight="SemiBold"
@@ -51,32 +67,57 @@
           </DockPanel>
         </Border>
 
-        <!-- Navegación -->
+        <!-- Navegación: IsChecked refleja PaginaActual (la navegación interna,
+             p.ej. crear préstamo → detalle, también actualiza el sidebar) -->
         <StackPanel>
           <TextBlock Text="MENÚ PRINCIPAL" Style="{DynamicResource Texto.MicroLabel}"
                      Margin="24,0,0,8" />
-          <RadioButton Content="Panel" Style="{DynamicResource Sidebar.Item}" IsChecked="True"
+          <RadioButton Content="Panel" Tag="&#xE80F;" Style="{DynamicResource Sidebar.Item}"
+                       IsChecked="{Binding PaginaActual, Mode=OneWay,
+                                   Converter={StaticResource Igualdad},
+                                   ConverterParameter={x:Static vm:Pagina.Panel}}"
                        Command="{Binding NavegarCommand}"
                        CommandParameter="{x:Static vm:Pagina.Panel}" />
-          <RadioButton Content="Clientes" Style="{DynamicResource Sidebar.Item}"
+          <RadioButton Content="Clientes" Tag="&#xE716;" Style="{DynamicResource Sidebar.Item}"
+                       IsChecked="{Binding PaginaActual, Mode=OneWay,
+                                   Converter={StaticResource Igualdad},
+                                   ConverterParameter={x:Static vm:Pagina.Clientes}}"
                        Command="{Binding NavegarCommand}"
                        CommandParameter="{x:Static vm:Pagina.Clientes}" />
-          <RadioButton Content="Préstamos" Style="{DynamicResource Sidebar.Item}"
+          <RadioButton Content="Préstamos" Tag="&#xE825;" Style="{DynamicResource Sidebar.Item}"
+                       IsChecked="{Binding PaginaActual, Mode=OneWay,
+                                   Converter={StaticResource Igualdad},
+                                   ConverterParameter={x:Static vm:Pagina.Prestamos}}"
                        Command="{Binding NavegarCommand}"
                        CommandParameter="{x:Static vm:Pagina.Prestamos}" />
-          <RadioButton Content="Nuevo préstamo" Style="{DynamicResource Sidebar.Item}"
+          <RadioButton Content="Nuevo préstamo" Tag="&#xE710;" Style="{DynamicResource Sidebar.Item}"
+                       IsChecked="{Binding PaginaActual, Mode=OneWay,
+                                   Converter={StaticResource Igualdad},
+                                   ConverterParameter={x:Static vm:Pagina.NuevoPrestamo}}"
                        Command="{Binding NavegarCommand}"
                        CommandParameter="{x:Static vm:Pagina.NuevoPrestamo}" />
-          <RadioButton Content="Cobros" Style="{DynamicResource Sidebar.Item}"
+          <RadioButton Content="Cobros" Tag="&#xE8EF;" Style="{DynamicResource Sidebar.Item}"
+                       IsChecked="{Binding PaginaActual, Mode=OneWay,
+                                   Converter={StaticResource Igualdad},
+                                   ConverterParameter={x:Static vm:Pagina.Cobros}}"
                        Command="{Binding NavegarCommand}"
                        CommandParameter="{x:Static vm:Pagina.Cobros}" />
-          <RadioButton Content="Reportes" Style="{DynamicResource Sidebar.Item}"
+          <RadioButton Content="Reportes" Tag="&#xE9D2;" Style="{DynamicResource Sidebar.Item}"
+                       IsChecked="{Binding PaginaActual, Mode=OneWay,
+                                   Converter={StaticResource Igualdad},
+                                   ConverterParameter={x:Static vm:Pagina.Reportes}}"
                        Command="{Binding NavegarCommand}"
                        CommandParameter="{x:Static vm:Pagina.Reportes}" />
-          <RadioButton Content="Historial" Style="{DynamicResource Sidebar.Item}"
+          <RadioButton Content="Historial" Tag="&#xE81C;" Style="{DynamicResource Sidebar.Item}"
+                       IsChecked="{Binding PaginaActual, Mode=OneWay,
+                                   Converter={StaticResource Igualdad},
+                                   ConverterParameter={x:Static vm:Pagina.Historial}}"
                        Command="{Binding NavegarCommand}"
                        CommandParameter="{x:Static vm:Pagina.Historial}" />
-          <RadioButton Content="Configuración" Style="{DynamicResource Sidebar.Item}"
+          <RadioButton Content="Configuración" Tag="&#xE713;" Style="{DynamicResource Sidebar.Item}"
+                       IsChecked="{Binding PaginaActual, Mode=OneWay,
+                                   Converter={StaticResource Igualdad},
+                                   ConverterParameter={x:Static vm:Pagina.Configuracion}}"
                        Command="{Binding NavegarCommand}"
                        CommandParameter="{x:Static vm:Pagina.Configuracion}" />
         </StackPanel>
