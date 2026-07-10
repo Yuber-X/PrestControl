@@ -37,6 +37,7 @@ public partial class App : Application
             ShutdownMode = ShutdownMode.OnMainWindowClose;
             shell.Show();
             login.Close();
+            _ = _servicios.GetRequiredService<MainViewModel>().InicializarAsync();
         };
 
         login.Show();
@@ -84,14 +85,26 @@ public partial class App : Application
         servicios.AddSingleton<UsuarioRepository>();
         servicios.AddSingleton<SesionRepository>();
         servicios.AddSingleton<AuditoriaRepository>();
+        servicios.AddSingleton<ClienteRepository>();
+        servicios.AddSingleton<PrestamoRepository>();
+        servicios.AddSingleton<PagoRepository>();
+        servicios.AddSingleton<ContadorRepository>();
 
         // Services
         servicios.AddSingleton<AuditoriaService>();
         servicios.AddSingleton<AuthService>();
         servicios.AddSingleton<AmortizacionService>();
+        servicios.AddSingleton<ClienteService>();
+        servicios.AddSingleton<PrestamoService>();
+        servicios.AddSingleton<PagoService>();
+        servicios.AddSingleton<PrestControl.Common.IDialogService, DialogService>();
 
         // ViewModels
         servicios.AddSingleton<LoginViewModel>();
+        servicios.AddSingleton<PrestamosViewModel>();
+        servicios.AddSingleton<PrestamoNuevoViewModel>();
+        servicios.AddSingleton<PrestamoDetalleViewModel>();
+        servicios.AddSingleton<CobrosViewModel>();
         servicios.AddSingleton<MainViewModel>();
 
         // Views

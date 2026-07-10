@@ -93,16 +93,8 @@
       <TextBlock Grid.Row="0" Text="{Binding TituloPagina}"
                  Style="{DynamicResource Texto.Titulo1}" Margin="0,0,0,20" />
 
-      <!-- Placeholder hasta que cada módulo se implemente en su fase -->
-      <Border Grid.Row="1" Style="{DynamicResource Card}">
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-          <TextBlock Text="Módulo en construcción" Style="{DynamicResource Texto.Titulo2}"
-                     HorizontalAlignment="Center" />
-          <TextBlock Text="Esta pantalla se implementará en su fase correspondiente."
-                     Style="{DynamicResource Texto.Caption}" HorizontalAlignment="Center"
-                     Margin="0,6,0,0" />
-        </StackPanel>
-      </Border>
+      <!-- Página activa: el DataTemplate global (App.xaml) resuelve la View -->
+      <ContentControl Grid.Row="1" Content="{Binding PaginaActualVm}" Focusable="False" />
     </Grid>
   </Grid>
 </Window>

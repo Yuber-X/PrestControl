@@ -81,3 +81,28 @@ Calculado en tiempo real, nunca persistido:
 | Cancelada | el préstamo fue cancelado |
 
 Cobertura de tests: 100% de las ramas (requisito del proyecto).
+
+## 7. Distribución de cobros (`PagoService`)
+
+Todo abono se distribuye entre las cuotas impagas **en orden**, y dentro de cada
+cuota aplica **primero a interés, luego a capital** (práctica contable estándar).
+Del acumulado `monto_pagado` de la cuota se deriva sin columnas extra:
+
+```
+interésPendiente = max(0, interés − montoPagado)
+capitalPendiente = capital − max(0, montoPagado − interés)
+```
+
+| Escenario | Comportamiento |
+|---|---|
+| Pago exacto | Cubre el saldo de la próxima cuota; queda `pagada` |
+| Abono parcial | Aplica a interés primero; la cuota conserva su estado |
+| Adelanto | El excedente cae en cascada a las cuotas siguientes |
+| Liquidación anticipada | Vencidas/vigentes se cobran completas; las **futuras pagan solo su capital pendiente** y su interés se exonera (decisión corregible — BLOCKERS.md #5) |
+
+El cobro completo es UNA transacción: cuotas bloqueadas con `SELECT ... FOR UPDATE`,
+`numero_recibo` atómico desde `contador`, actualización de cuotas, estado del
+préstamo (`pagado` si todo quedó cubierto) y auditoría. Rollback ante cualquier error.
+
+Un monto que exceda la deuda pendiente se rechaza (no hay "cambio"); para saldar
+el préstamo se usa la liquidación anticipada.

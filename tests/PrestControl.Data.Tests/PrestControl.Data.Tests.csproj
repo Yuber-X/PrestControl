@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\PrestControl.Data\PrestControl.Data.csproj" />
+    <ProjectReference Include="..\..\src\PrestControl.Services\PrestControl.Services.csproj" />
   </ItemGroup>
 
 </Project>

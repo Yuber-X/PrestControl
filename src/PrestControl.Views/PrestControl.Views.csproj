@@ -3,6 +3,11 @@
   <ItemGroup>
     <ProjectReference Include="..\PrestControl.ViewModels\PrestControl.ViewModels.csproj" />
     <ProjectReference Include="..\PrestControl.Common\PrestControl.Common.csproj" />
+    <ProjectReference Include="..\PrestControl.Printing\PrestControl.Printing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="4.4.0" />
   </ItemGroup>
 
   <PropertyGroup>
