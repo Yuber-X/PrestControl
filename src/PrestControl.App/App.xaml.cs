@@ -33,11 +33,23 @@ public partial class App : Application
         loginVm.LoginExitoso += (_, _) =>
         {
             var shell = _servicios.GetRequiredService<MainWindow>();
+            var ajustes = _servicios.GetRequiredService<PrestControl.Common.AjustesLocales>();
+
+            // Tamaño de texto guardado + reacción a cambios desde Configuración
+            shell.AplicarEscala(ajustes.FactorEscala);
+            _servicios.GetRequiredService<ConfiguracionViewModel>().EscalaCambiada += shell.AplicarEscala;
+
             MainWindow = shell;
             ShutdownMode = ShutdownMode.OnMainWindowClose;
             shell.Show();
             login.Close();
             _ = _servicios.GetRequiredService<MainViewModel>().InicializarAsync();
+
+            // Export automático a Excel (si está activo y toca) — en segundo plano
+            _ = _servicios.GetRequiredService<ExportacionService>().EjecutarAutomaticoSiTocaAsync(ajustes);
+
+            // Aviso de clientes pasados de fecha (una vez por arranque + cambio de día)
+            _servicios.GetRequiredService<NotificadorVencidos>().Iniciar();
         };
 
         login.Show();
@@ -90,6 +102,8 @@ public partial class App : Application
         servicios.AddSingleton<PagoRepository>();
         servicios.AddSingleton<ContadorRepository>();
         servicios.AddSingleton<DashboardRepository>();
+        servicios.AddSingleton<ReporteRepository>();
+        servicios.AddSingleton<ExportacionRepository>();
 
         // Services
         servicios.AddSingleton<AuditoriaService>();
@@ -99,7 +113,13 @@ public partial class App : Application
         servicios.AddSingleton<PrestamoService>();
         servicios.AddSingleton<PagoService>();
         servicios.AddSingleton<DashboardService>();
+        servicios.AddSingleton<ReporteService>();
+        servicios.AddSingleton<ExportacionService>();
+        servicios.AddSingleton(sp =>
+            new RespaldoService(sp.GetRequiredService<ConexionFactory>().CadenaConexion));
+        servicios.AddSingleton(PrestControl.Common.AjustesLocales.Cargar());
         servicios.AddSingleton<PrestControl.Common.IDialogService, DialogService>();
+        servicios.AddSingleton<NotificadorVencidos>();
 
         // ViewModels
         servicios.AddSingleton<LoginViewModel>();
@@ -111,6 +131,9 @@ public partial class App : Application
         servicios.AddSingleton<PrestamoDetalleViewModel>();
         servicios.AddSingleton<CobrosViewModel>();
         servicios.AddSingleton<PanelViewModel>();
+        servicios.AddSingleton<ReportesViewModel>();
+        servicios.AddSingleton<HistorialViewModel>();
+        servicios.AddSingleton<ConfiguracionViewModel>();
         servicios.AddSingleton<MainViewModel>();
 
         // Views

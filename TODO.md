@@ -52,15 +52,22 @@
 - [x] Gráfico de cobros diarios del mes (LiveChartsCore 2.0.5)
 - [x] Últimos movimientos (10 pagos recientes)
 
-## ⏳ Fases 6, 7 (pendientes)
-- [ ] Fase 6: 6 reportes + Historial auditoría + Configuración (cambio password, respaldo mysqldump)
-- [ ] Fase 6 · Configuración — **pedidos de Yuber 2026-07-10** (ver `Claude Active/PrestaControl/Nuevos detalles a agregar.txt`):
-  - [ ] Tamaño de texto configurable: Pequeño / Mediano / Grande (escala tipográfica global; el usuario percibe las letras muy pequeñas)
-  - [ ] Exportar/Importar TODOS los datos (clientes, préstamos, cuotas, pagos, historial) a Excel para migrar de PC
-  - [ ] Export automático a Excel con lapso ajustable (default mensual), con switch activar/desactivar en Configuración
-- [ ] Fase 6: Historial con filtros por fecha, entidad y acción (pedido de Yuber: igual que Préstamos/Clientes)
-- [ ] Fase 7: Instalador (Inno Setup) + INSTALL.md + manual de usuario
-- [ ] Fase 7: **Documentación final detallada e increíblemente fácil de entender** (pedido explícito de Yuber 2026-07-10): guía de uso pantalla por pantalla con capturas, en lenguaje no técnico
+## ✅ Fase 6 — Reportes, Historial y Configuración (COMPLETA)
+- [x] Reporte "Ingresos por período" fiel al mockup (KPIs, barras apiladas por semana, desglose, export Excel)
+- [x] Historial de auditoría con filtros por fecha, entidad y acción
+- [x] Configuración: cambio de contraseña
+- [x] Tamaño de texto Pequeño/Mediano/Grande (persistente, escala toda la UI)
+- [x] Respaldo/restauración de BD (mysqldump/mysql, doble confirmación)
+- [x] Export Excel completo (manual + automático cada N días, activable)
+- [x] **Notificador de vencimientos** (pedido del cliente): aviso al iniciar + cambio de día,
+      silenciado individual por cliente, activable en Configuración
+- Nota: los "6 reportes" del plan original quedaron como el único mockup diseñado — más tipos a definir con el cliente (BLOCKERS #7). Importar desde Excel descartado (BLOCKERS #8).
+
+## ⏳ Fase 7 (pendiente — cierre del proyecto)
+- [ ] Instalador (Inno Setup) + script de instalación de MySQL como dependencia
+- [ ] INSTALL.md + creación de usuario MySQL dedicado `prestcontrol` (no root)
+- [ ] **Documentación final detallada e increíblemente fácil de entender** (pedido explícito de Yuber): guía de uso pantalla por pantalla, lenguaje no técnico
+- [ ] Copiar el proyecto terminado a `Freelancer - Claude Save\` (instrucción de Yuber)
 - [ ] Logout que regrese al login sin cerrar la app (hoy cierra la app — decisión pendiente)
 - [ ] Empaquetar fuente Inter .ttf (hoy usa fallback Segoe UI)
 - [ ] Sidebar: marcar el ítem activo cuando la navegación no viene de un click (detalle/nuevo)

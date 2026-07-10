@@ -32,13 +32,20 @@ public partial class MainViewModel : ObservableObject
     private readonly ClienteFichaViewModel _fichaVm;
     private readonly ClienteFormViewModel _clienteFormVm;
     private readonly PanelViewModel _panelVm;
+    private readonly ReportesViewModel _reportesVm;
+    private readonly HistorialViewModel _historialVm;
+    private readonly ConfiguracionViewModel _configuracionVm;
 
     public MainViewModel(PrestamosViewModel prestamosVm, PrestamoNuevoViewModel nuevoVm,
         PrestamoDetalleViewModel detalleVm, CobrosViewModel cobrosVm,
         ClientesViewModel clientesVm, ClienteFichaViewModel fichaVm, ClienteFormViewModel clienteFormVm,
-        PanelViewModel panelVm)
+        PanelViewModel panelVm, ReportesViewModel reportesVm, HistorialViewModel historialVm,
+        ConfiguracionViewModel configuracionVm)
     {
         _panelVm = panelVm;
+        _reportesVm = reportesVm;
+        _historialVm = historialVm;
+        _configuracionVm = configuracionVm;
         _panelVm.CobrarSolicitado += id => _ = AbrirCobrosAsync(id);
         _prestamosVm = prestamosVm;
         _nuevoVm = nuevoVm;
@@ -122,6 +129,17 @@ public partial class MainViewModel : ObservableObject
                 case Pagina.Cobros:
                     await _cobrosVm.CargarAsync();
                     PaginaActualVm = _cobrosVm;
+                    break;
+                case Pagina.Reportes:
+                    await _reportesVm.CargarAsync();
+                    PaginaActualVm = _reportesVm;
+                    break;
+                case Pagina.Historial:
+                    await _historialVm.CargarAsync();
+                    PaginaActualVm = _historialVm;
+                    break;
+                case Pagina.Configuracion:
+                    PaginaActualVm = _configuracionVm;
                     break;
                 default:
                     PaginaActualVm = new PlaceholderViewModel(TituloDe(destino));

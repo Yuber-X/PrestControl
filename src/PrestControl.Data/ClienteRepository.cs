@@ -120,6 +120,46 @@ public class ClienteRepository
         return resumenes;
     }
 
+    /// <summary>
+    /// Clientes con cuotas ya vencidas sin cubrir (préstamos activos), para el
+    /// notificador de vencimientos. Ordenados por antigüedad del vencimiento.
+    /// </summary>
+    public async Task<IReadOnlyList<ClienteVencido>> ObtenerClientesConVencidasAsync(
+        DateOnly hoy, CancellationToken ct = default)
+    {
+        using var conexion = await _factory.AbrirAsync(ct);
+        using var cmd = conexion.CreateCommand();
+        cmd.CommandText = $"""
+            SELECT c.id, CONCAT(c.nombre, ' ', c.apellido) AS nombre_completo,
+                   COUNT(*) AS cuotas_vencidas,
+                   SUM(q.monto_total - q.monto_pagado) AS monto_vencido,
+                   MIN(q.fecha_vencimiento) AS primer_vencimiento
+            FROM {DbNames.Cuota} q
+            JOIN {DbNames.Prestamo} p ON p.id = q.prestamo_id
+            JOIN {DbNames.Cliente} c ON c.id = p.cliente_id
+            WHERE p.estado = 'activo'
+              AND q.estado IN ('pendiente', 'vencida', 'en_mora')
+              AND q.fecha_vencimiento < @hoy
+              AND c.deleted_at IS NULL
+            GROUP BY c.id, nombre_completo
+            ORDER BY primer_vencimiento;
+            """;
+        cmd.Parameters.AddWithValue("@hoy", hoy.ToDateTime(TimeOnly.MinValue));
+
+        var vencidos = new List<ClienteVencido>();
+        using var reader = await cmd.ExecuteReaderAsync(ct);
+        while (await reader.ReadAsync(ct))
+        {
+            vencidos.Add(new ClienteVencido(
+                reader.GetInt64("id"),
+                reader.GetString("nombre_completo"),
+                reader.GetInt32("cuotas_vencidas"),
+                reader.GetDecimal("monto_vencido"),
+                DateOnly.FromDateTime(reader.GetDateTime("primer_vencimiento"))));
+        }
+        return vencidos;
+    }
+
     /// <summary>Métricas de la ficha (mockup 3). hoy = fecha de negocio para contar vencidas.</summary>
     public async Task<ClienteMetricas> ObtenerMetricasAsync(long clienteId, DateOnly hoy, CancellationToken ct = default)
     {

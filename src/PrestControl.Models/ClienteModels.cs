@@ -21,6 +21,17 @@ public record ClienteMetricas(
     int PrestamosActivos,
     int CuotasVencidas);
 
+/// <summary>
+/// Cliente con cuotas vencidas (notificador de vencimientos al iniciar).
+/// PrimerVencimiento = la fecha vencida más antigua sin cubrir.
+/// </summary>
+public record ClienteVencido(
+    long ClienteId,
+    string NombreCompleto,
+    int CuotasVencidas,
+    decimal MontoVencido,
+    DateOnly PrimerVencimiento);
+
 /// <summary>Datos que captura el formulario de cliente (nuevo o edición).</summary>
 public record ClienteDatos(
     string Cedula,

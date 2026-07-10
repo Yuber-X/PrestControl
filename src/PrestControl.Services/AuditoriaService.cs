@@ -28,6 +28,10 @@ public class AuditoriaService
         string? descripcion, MySqlConnection conexion, MySqlTransaction transaccion, CancellationToken ct = default) =>
         _repositorio.InsertarAsync(Construir(accion, entidad, entidadId, descripcion), conexion, transaccion, ct);
 
+    /// <summary>Visor del Historial (solo lectura, con filtros).</summary>
+    public Task<IReadOnlyList<Auditoria>> BuscarAsync(FiltroAuditoria filtro, CancellationToken ct = default) =>
+        _repositorio.BuscarAsync(filtro, ct);
+
     private static Auditoria Construir(AccionAuditoria accion, string entidad, long? entidadId, string? descripcion)
     {
         if (!SesionActual.HaySesionActiva)

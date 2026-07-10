@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Media;
 using PrestControl.Services;
 using PrestControl.ViewModels;
 
@@ -14,6 +15,10 @@ public partial class MainWindow : Window
         DataContext = vm;
         _auth = auth;
     }
+
+    /// <summary>Tamaño de texto Pequeño/Mediano/Grande (Configuración → Apariencia).</summary>
+    public void AplicarEscala(double factor) =>
+        Raiz.LayoutTransform = factor == 1.0 ? null : new ScaleTransform(factor, factor);
 
     private async void BotonSalir_Click(object sender, RoutedEventArgs e)
     {

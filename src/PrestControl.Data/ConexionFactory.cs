@@ -26,6 +26,9 @@ public class ConexionFactory
     /// <summary>Permite inyectar la cadena directamente (tests de integración).</summary>
     public ConexionFactory(string cadenaConexion) => _cadenaConexion = cadenaConexion;
 
+    /// <summary>Expuesta para servicios que invocan herramientas externas (mysqldump).</summary>
+    public string CadenaConexion => _cadenaConexion;
+
     /// <summary>Abre una conexión nueva. El llamador es dueño de su ciclo de vida (using).</summary>
     public async Task<MySqlConnection> AbrirAsync(CancellationToken ct = default)
     {

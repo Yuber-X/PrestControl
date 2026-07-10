@@ -2,6 +2,22 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/1.0.0/). Fechas en hora de República Dominicana.
 
+## [0.5.0] — 2026-07-10 · Fase 6 (Reportes, Historial, Configuración) + Notificador de vencimientos
+
+### Added
+- **Reporte "Ingresos por período"** (fiel al mockup): rango de fechas con atajos (Este mes / Mes pasado / Trimestre / Año), KPIs — Ganancia (interés cobrado, card indigo), Capital recuperado, Total cobrado, Cuotas cobradas "X de Y programadas" —, gráfico de barras apiladas por semana (interés+capital) y desglose semanal con fila de totales. Botón Exportar Excel.
+- **Historial**: visor de solo lectura de la auditoría con filtros por fecha, entidad y acción (límite 300, aviso para afinar filtros).
+- **Configuración**:
+  - Cambio de contraseña (actual + nueva + confirmación, errores inline).
+  - **Tamaño de texto Pequeño/Mediano/Grande** (pedido de Yuber): escala toda la UI (1.0/1.12/1.25) al instante y persiste en `ajustes.json`.
+  - **Respaldo/restauración** de la BD con mysqldump/mysql (búsqueda automática del binario, contraseña por MYSQL_PWD, doble confirmación al restaurar).
+  - **Exportación a Excel** (ClosedXML 0.105, MIT): libro .xlsx con hojas Clientes/Préstamos/Cuotas/Pagos/Auditoría; manual y **automática** al abrir la app (cada N días configurable, carpeta elegible, activable).
+- **Notificador de vencimientos** (pedido del cliente, estilo POS-400): al iniciar sesión —y al cambiar el día de negocio con la app abierta— avisa qué clientes se pasaron de su fecha de pago (lista en rojo con cuotas, monto y fecha). Botón OK + checkbox "No volver a preguntar por este cliente" (persistente, individual). Activable y con "restablecer silenciados" en Configuración.
+
+### Decisiones
+- El mockup de Reportes define UN reporte (Ingresos por período); se implementó ese. Los "6 tipos" del plan original quedan abiertos a definirse con el cliente (BLOCKERS.md).
+- La migración de PC recomendada es Respaldar/Restaurar (.sql, conserva ids y relaciones); el Excel es de consulta. Importar desde Excel se descartó por riesgo de integridad (BLOCKERS.md).
+
 ## [0.4.0] — 2026-07-10 · Fase 5 (Dashboard) + ajustes finos de UI
 
 ### Added
