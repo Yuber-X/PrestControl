@@ -1,0 +1,179 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- ============================================================
+       Botones — DESIGN.md §8: radius 8, altura 40, hover -8% luz
+       ============================================================ -->
+  <Style x:Key="Boton.Primario" TargetType="Button">
+    <Setter Property="Background" Value="{DynamicResource Brush.Primario}" />
+    <Setter Property="Foreground" Value="White" />
+    <Setter Property="FontFamily" Value="{StaticResource Fuente.Interfaz}" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="FontWeight" Value="Medium" />
+    <Setter Property="Height" Value="40" />
+    <Setter Property="Padding" Value="16,0" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border x:Name="Fondo"
+                  Background="{TemplateBinding Background}"
+                  CornerRadius="8"
+                  Padding="{TemplateBinding Padding}">
+            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Fondo" Property="Background" Value="{DynamicResource Brush.PrimarioHover}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter TargetName="Fondo" Property="Background" Value="{DynamicResource Brush.BordeSutil}" />
+              <Setter Property="Foreground" Value="{DynamicResource Brush.TextoDeshabilitado}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="Boton.Secundario" TargetType="Button" BasedOn="{StaticResource Boton.Primario}">
+    <Setter Property="Background" Value="White" />
+    <Setter Property="Foreground" Value="{DynamicResource Brush.Primario}" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border x:Name="Fondo"
+                  Background="{TemplateBinding Background}"
+                  BorderBrush="{DynamicResource Brush.Primario}"
+                  BorderThickness="1"
+                  CornerRadius="8"
+                  Padding="{TemplateBinding Padding}">
+            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Fondo" Property="Background" Value="{DynamicResource Brush.PrimarioSutil}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- ============================================================
+       Inputs — altura 40, borde #D4D4D3, focus indigo
+       ============================================================ -->
+  <Style x:Key="Input.Texto" TargetType="TextBox">
+    <Setter Property="Height" Value="40" />
+    <Setter Property="Padding" Value="10,0" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="FontFamily" Value="{StaticResource Fuente.Interfaz}" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="Foreground" Value="{DynamicResource Brush.TextoPrincipal}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.BordeEstandar}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="TextBox">
+          <Border x:Name="Borde"
+                  Background="White"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="8">
+            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"
+                          VerticalAlignment="Center" />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+              <Setter TargetName="Borde" Property="BorderBrush" Value="{DynamicResource Brush.Primario}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <Style x:Key="Input.Password" TargetType="PasswordBox">
+    <Setter Property="Height" Value="40" />
+    <Setter Property="Padding" Value="10,0" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="FontFamily" Value="{StaticResource Fuente.Interfaz}" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.BordeEstandar}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="PasswordBox">
+          <Border x:Name="Borde"
+                  Background="White"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="8">
+            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"
+                          VerticalAlignment="Center" />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+              <Setter TargetName="Borde" Property="BorderBrush" Value="{DynamicResource Brush.Primario}" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- Label arriba del input, nunca al lado -->
+  <Style x:Key="Input.Label" TargetType="TextBlock" BasedOn="{StaticResource Texto.Cuerpo}">
+    <Setter Property="Foreground" Value="{DynamicResource Brush.TextoSecundario}" />
+    <Setter Property="Margin" Value="0,0,0,6" />
+  </Style>
+
+  <!-- ============================================================
+       Card — fondo blanco, borde sutil 0.5, radius 12, sombra nivel 1
+       ============================================================ -->
+  <Style x:Key="Card" TargetType="Border">
+    <Setter Property="Background" Value="{DynamicResource Brush.FondoCard}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource Brush.BordeSutil}" />
+    <Setter Property="BorderThickness" Value="0.5" />
+    <Setter Property="CornerRadius" Value="12" />
+    <Setter Property="Padding" Value="20" />
+    <Setter Property="Effect">
+      <Setter.Value>
+        <DropShadowEffect BlurRadius="2" ShadowDepth="1" Opacity="0.05" Color="Black" />
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+  <!-- ============================================================
+       Navegación del sidebar (RadioButton para exclusión mutua)
+       ============================================================ -->
+  <Style x:Key="Sidebar.Item" TargetType="RadioButton">
+    <Setter Property="Height" Value="40" />
+    <Setter Property="Margin" Value="12,2" />
+    <Setter Property="FontFamily" Value="{StaticResource Fuente.Interfaz}" />
+    <Setter Property="FontSize" Value="13" />
+    <Setter Property="Foreground" Value="{DynamicResource Brush.TextoSecundario}" />
+    <Setter Property="Cursor" Value="Hand" />
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="RadioButton">
+          <Border x:Name="Fondo" Background="Transparent" CornerRadius="8" Padding="12,0">
+            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center" />
+          </Border>
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Fondo" Property="Background" Value="{DynamicResource Brush.FondoApp}" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+              <Setter TargetName="Fondo" Property="Background" Value="{DynamicResource Brush.PrimarioSutil}" />
+              <Setter Property="Foreground" Value="{DynamicResource Brush.Primario}" />
+              <Setter Property="FontWeight" Value="Medium" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
+</ResourceDictionary>

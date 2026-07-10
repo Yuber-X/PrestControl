@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\PrestControl.Views\PrestControl.Views.csproj" />
+    <ProjectReference Include="..\PrestControl.ViewModels\PrestControl.ViewModels.csproj" />
+    <ProjectReference Include="..\PrestControl.Services\PrestControl.Services.csproj" />
+    <ProjectReference Include="..\PrestControl.Data\PrestControl.Data.csproj" />
+    <ProjectReference Include="..\PrestControl.Common\PrestControl.Common.csproj" />
+    <ProjectReference Include="..\PrestControl.Printing\PrestControl.Printing.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.9" />
+    <PackageReference Include="Serilog" Version="4.4.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+</Project>
