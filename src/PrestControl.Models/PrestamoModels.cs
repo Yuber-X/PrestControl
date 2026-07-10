@@ -19,6 +19,7 @@ public record NuevoPrestamo(
 public record PrestamoResumen(
     long Id,
     string Codigo,
+    long ClienteId,
     string ClienteNombre,
     decimal MontoCapital,
     decimal TasaInteres,

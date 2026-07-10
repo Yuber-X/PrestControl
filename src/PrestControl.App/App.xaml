@@ -34,6 +34,15 @@
       <DataTemplate DataType="{x:Type vm:CobrosViewModel}">
         <views:CobrosView />
       </DataTemplate>
+      <DataTemplate DataType="{x:Type vm:ClientesViewModel}">
+        <views:ClientesListView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type vm:ClienteFichaViewModel}">
+        <views:ClienteFichaView />
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type vm:ClienteFormViewModel}">
+        <views:ClienteFormView />
+      </DataTemplate>
       <DataTemplate DataType="{x:Type vm:PlaceholderViewModel}">
         <Border Style="{DynamicResource Card}">
           <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

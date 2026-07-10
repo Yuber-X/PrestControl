@@ -28,14 +28,21 @@ public partial class MainViewModel : ObservableObject
     private readonly PrestamoNuevoViewModel _nuevoVm;
     private readonly PrestamoDetalleViewModel _detalleVm;
     private readonly CobrosViewModel _cobrosVm;
+    private readonly ClientesViewModel _clientesVm;
+    private readonly ClienteFichaViewModel _fichaVm;
+    private readonly ClienteFormViewModel _clienteFormVm;
 
     public MainViewModel(PrestamosViewModel prestamosVm, PrestamoNuevoViewModel nuevoVm,
-        PrestamoDetalleViewModel detalleVm, CobrosViewModel cobrosVm)
+        PrestamoDetalleViewModel detalleVm, CobrosViewModel cobrosVm,
+        ClientesViewModel clientesVm, ClienteFichaViewModel fichaVm, ClienteFormViewModel clienteFormVm)
     {
         _prestamosVm = prestamosVm;
         _nuevoVm = nuevoVm;
         _detalleVm = detalleVm;
         _cobrosVm = cobrosVm;
+        _clientesVm = clientesVm;
+        _fichaVm = fichaVm;
+        _clienteFormVm = clienteFormVm;
 
         // Navegación entre módulos disparada por los propios ViewModels
         _prestamosVm.NuevoSolicitado += () => _ = NavegarAsync(Pagina.NuevoPrestamo);
@@ -43,6 +50,16 @@ public partial class MainViewModel : ObservableObject
         _nuevoVm.PrestamoCreado += id => _ = AbrirDetalleAsync(id);
         _detalleVm.VolverSolicitado += () => _ = NavegarAsync(Pagina.Prestamos);
         _detalleVm.CobrarSolicitado += id => _ = AbrirCobrosAsync(id);
+
+        // Clientes: lista → ficha → formulario / nuevo préstamo
+        _clientesVm.NuevoSolicitado += AbrirClienteNuevo;
+        _clientesVm.FichaSolicitada += id => _ = AbrirFichaAsync(id);
+        _fichaVm.EditarSolicitado += id => _ = AbrirClienteEdicionAsync(id);
+        _fichaVm.VolverSolicitado += () => _ = NavegarAsync(Pagina.Clientes);
+        _fichaVm.PrestamoSeleccionado += id => _ = AbrirDetalleAsync(id);
+        _fichaVm.NuevoPrestamoSolicitado += id => _ = AbrirNuevoPrestamoParaClienteAsync(id);
+        _clienteFormVm.Guardado += id => _ = AbrirFichaAsync(id);
+        _clienteFormVm.Cancelado += () => _ = NavegarAsync(Pagina.Clientes);
     }
 
     [ObservableProperty]
@@ -82,6 +99,10 @@ public partial class MainViewModel : ObservableObject
 
             switch (destino)
             {
+                case Pagina.Clientes:
+                    await _clientesVm.CargarAsync();
+                    PaginaActualVm = _clientesVm;
+                    break;
                 case Pagina.Prestamos:
                     await _prestamosVm.CargarAsync();
                     PaginaActualVm = _prestamosVm;
@@ -118,6 +139,50 @@ public partial class MainViewModel : ObservableObject
         {
             Log.Error(ex, "Error abriendo el detalle del préstamo {Id}", prestamoId);
         }
+    }
+
+    private async Task AbrirFichaAsync(long clienteId)
+    {
+        try
+        {
+            PaginaActual = Pagina.Clientes;
+            TituloPagina = "Ficha de cliente";
+            await _fichaVm.CargarAsync(clienteId);
+            PaginaActualVm = _fichaVm;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error abriendo la ficha del cliente {Id}", clienteId);
+        }
+    }
+
+    private void AbrirClienteNuevo()
+    {
+        _clienteFormVm.PrepararNuevo();
+        PaginaActual = Pagina.Clientes;
+        TituloPagina = "Nuevo cliente";
+        PaginaActualVm = _clienteFormVm;
+    }
+
+    private async Task AbrirClienteEdicionAsync(long clienteId)
+    {
+        try
+        {
+            await _clienteFormVm.PrepararEdicionAsync(clienteId);
+            PaginaActual = Pagina.Clientes;
+            TituloPagina = "Editar cliente";
+            PaginaActualVm = _clienteFormVm;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error abriendo la edición del cliente {Id}", clienteId);
+        }
+    }
+
+    private async Task AbrirNuevoPrestamoParaClienteAsync(long clienteId)
+    {
+        await NavegarAsync(Pagina.NuevoPrestamo);
+        _nuevoVm.PreseleccionarCliente(clienteId);
     }
 
     private async Task AbrirCobrosAsync(long prestamoId)

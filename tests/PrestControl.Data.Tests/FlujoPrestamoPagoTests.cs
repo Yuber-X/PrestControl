@@ -21,6 +21,7 @@ public class FlujoPrestamoPagoTests : IAsyncLifetime
     private ConexionFactory _factory = null!;
     private PrestamoService _prestamos = null!;
     private PagoService _pagos = null!;
+    private ClienteService _clientes = null!;
     private long _clienteId;
 
     public async Task InitializeAsync()
@@ -38,6 +39,7 @@ public class FlujoPrestamoPagoTests : IAsyncLifetime
             new AmortizacionService(), auditoria);
         _pagos = new PagoService(_factory, prestamoRepo, pagoRepo, clienteRepo,
             contadorRepo, auditoria);
+        _clientes = new ClienteService(clienteRepo, auditoria);
 
         // Usuario + cliente de prueba, y sesión activa (la auditoría la exige)
         using var conexion = await _factory.AbrirAsync();
@@ -167,6 +169,57 @@ public class FlujoPrestamoPagoTests : IAsyncLifetime
         var resumen = resumenes.Single(r => r.Id == prestamoId);
         resumen.CuotasPagadas.Should().Be(12);
         resumen.ProximoVencimiento.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task CrudCliente_CrearActualizarYEliminarConProteccion()
+    {
+        // Crear: la cédula se normaliza a 000-0000000-0
+        var id = await _clientes.CrearAsync(new ClienteDatos(
+            "40212345678", "Pedro", "Integración", "809-555-0000", null, null, null));
+        var creado = await _clientes.ObtenerPorIdAsync(id);
+        creado!.Cedula.Should().Be("402-1234567-8");
+
+        // Cédula duplicada (aunque venga sin guiones) se rechaza
+        var duplicar = () => _clientes.CrearAsync(new ClienteDatos(
+            "402-1234567-8", "Otro", "Cliente", null, null, null, null));
+        await duplicar.Should().ThrowAsync<ArgumentException>().WithMessage("*Ya existe*");
+
+        // Actualizar
+        await _clientes.ActualizarAsync(id, new ClienteDatos(
+            "402-1234567-8", "Pedro Luis", "Integración", null, "Calle 1 #2", null, null));
+        (await _clientes.ObtenerPorIdAsync(id))!.Nombre.Should().Be("Pedro Luis");
+
+        // Con préstamo activo NO se puede eliminar
+        var (prestamoId, _) = await _prestamos.CrearAsync(new NuevoPrestamo(
+            id, 1_000m, 5m, 2, Modalidad.Mensual, MetodoAmortizacion.CuotaFija,
+            FechaNegocio.Hoy.AddMonths(1), null, null));
+        var eliminar = () => _clientes.EliminarAsync(id);
+        await eliminar.Should().ThrowAsync<InvalidOperationException>().WithMessage("*activo*");
+
+        // Cancelado el préstamo, el soft delete procede y desaparece de las listas
+        await _prestamos.CancelarAsync(prestamoId, "test");
+        await _clientes.EliminarAsync(id);
+        (await _clientes.ObtenerPorIdAsync(id)).Should().BeNull();
+        (await _clientes.ObtenerResumenesAsync()).Should().NotContain(c => c.Id == id);
+    }
+
+    [Fact]
+    public async Task MetricasDeCliente_ReflejanPrestamosYCobros()
+    {
+        // Préstamo 12,000 al 5% × 12 con la 1ra cuota vencida, más un abono de 1,600
+        var (prestamoId, _) = await _prestamos.CrearAsync(new NuevoPrestamo(
+            _clienteId, 12_000m, 5m, 12, Modalidad.Mensual, MetodoAmortizacion.CuotaFija,
+            FechaNegocio.Hoy.AddMonths(-1), null, null));
+        await _pagos.RegistrarPagoAsync(new SolicitudPago(
+            prestamoId, 1_600m, MetodoPago.Efectivo, null));
+
+        var metricas = await _clientes.ObtenerMetricasAsync(_clienteId);
+        metricas.TotalPrestado.Should().Be(12_000m);
+        metricas.TotalCobrado.Should().Be(1_600m);
+        metricas.SaldoPendiente.Should().Be(17_600m); // 19,200 − 1,600
+        metricas.PrestamosActivos.Should().Be(1);
+        metricas.CuotasVencidas.Should().Be(0);       // la vencida quedó pagada con el abono
     }
 
     [Fact]

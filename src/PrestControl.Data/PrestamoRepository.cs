@@ -161,7 +161,7 @@ public class PrestamoRepository
         using var conexion = await _factory.AbrirAsync(ct);
         using var cmd = conexion.CreateCommand();
         cmd.CommandText = $"""
-            SELECT p.id, p.codigo, CONCAT(c.nombre, ' ', c.apellido) AS cliente_nombre,
+            SELECT p.id, p.codigo, p.cliente_id, CONCAT(c.nombre, ' ', c.apellido) AS cliente_nombre,
                    p.monto_capital, p.tasa_interes, p.plazo_cuotas, p.modalidad,
                    p.metodo_amortizacion, p.fecha_inicio, p.estado,
                    COALESCE(SUM(q.monto_total), 0)  AS total_a_pagar,
@@ -172,7 +172,7 @@ public class PrestamoRepository
             FROM {DbNames.Prestamo} p
             JOIN {DbNames.Cliente} c ON c.id = p.cliente_id
             LEFT JOIN {DbNames.Cuota} q ON q.prestamo_id = p.id
-            GROUP BY p.id, p.codigo, cliente_nombre, p.monto_capital, p.tasa_interes,
+            GROUP BY p.id, p.codigo, p.cliente_id, cliente_nombre, p.monto_capital, p.tasa_interes,
                      p.plazo_cuotas, p.modalidad, p.metodo_amortizacion, p.fecha_inicio, p.estado
             ORDER BY p.id DESC;
             """;
@@ -184,6 +184,7 @@ public class PrestamoRepository
             resumenes.Add(new PrestamoResumen(
                 reader.GetInt64("id"),
                 reader.GetString("codigo"),
+                reader.GetInt64("cliente_id"),
                 reader.GetString("cliente_nombre"),
                 reader.GetDecimal("monto_capital"),
                 reader.GetDecimal("tasa_interes"),

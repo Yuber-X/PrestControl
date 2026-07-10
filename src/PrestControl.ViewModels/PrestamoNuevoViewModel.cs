@@ -104,6 +104,10 @@ public partial class PrestamoNuevoViewModel : ObservableObject
         }
     }
 
+    /// <summary>Preselecciona el cliente (flujo "Nuevo préstamo" desde su ficha). Llamar tras CargarAsync.</summary>
+    public void PreseleccionarCliente(long clienteId) =>
+        ClienteSeleccionado = Clientes.FirstOrDefault(c => c.Id == clienteId);
+
     /// <summary>Parsea el formulario. Devuelve null (con mensaje) si algo aún no es válido.</summary>
     private ParametrosAmortizacion? ParsearParametros(out string mensaje)
     {

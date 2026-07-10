@@ -101,6 +101,9 @@ public partial class App : Application
 
         // ViewModels
         servicios.AddSingleton<LoginViewModel>();
+        servicios.AddSingleton<ClientesViewModel>();
+        servicios.AddSingleton<ClienteFichaViewModel>();
+        servicios.AddSingleton<ClienteFormViewModel>();
         servicios.AddSingleton<PrestamosViewModel>();
         servicios.AddSingleton<PrestamoNuevoViewModel>();
         servicios.AddSingleton<PrestamoDetalleViewModel>();

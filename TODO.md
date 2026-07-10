@@ -1,6 +1,15 @@
 # TODO.md — PrestControl
 
-> Actualizado: 2026-07-10 (cierre de Fase 3 completa + Fase 4)
+> Actualizado: 2026-07-10 (cierre de Fases 2, 3 y 4)
+
+## ✅ Fase 2 — Clientes (COMPLETA)
+- [x] Lista con búsqueda por nombre/cédula/teléfono + agregados (préstamos activos, saldo)
+- [x] Ficha: 5 métricas + contacto + préstamos del cliente + doble click al detalle
+- [x] Formulario nuevo/editar con validación inline (cédula normalizada a 000-0000000-0)
+- [x] Soft delete protegido: no se elimina un cliente con préstamos activos
+- [x] Auditoría de crear/modificar/eliminar
+- [x] "+ Nuevo préstamo" desde la ficha preselecciona el cliente en el wizard
+- [x] Fix: LoginWindow crece con el contenido (botón cortado en el wizard inicial)
 
 ## ✅ Fase 1 — Cimientos (COMPLETA)
 - [x] Solución `.sln` con 8 proyectos src + 2 de tests, regla de dependencias respetada
@@ -37,10 +46,13 @@
 - [x] Recibo 80mm como visual WPF (patrón imagen POS-400): vista previa + impresión (PrintVisual) + PDF (PdfSharp)
 - [x] Tests de integración contra `prestcontrol_test`: flujo completo crear → abonar → adelantar → liquidar; cancelación
 
-## ⏳ Fases 2, 5, 6, 7 (post-12-julio, modelos menores)
-- [ ] Fase 2: CRUD Clientes completo (hoy solo lectura para selección)
+## ⏳ Fases 5, 6, 7 (pendientes)
 - [ ] Fase 5: Dashboard con KPIs + LiveChartsCore
 - [ ] Fase 6: 6 reportes + Historial auditoría + Configuración (cambio password, respaldo mysqldump)
+- [ ] Fase 6 · Configuración — **pedidos de Yuber 2026-07-10** (ver `Claude Active/PrestaControl/Nuevos detalles a agregar.txt`):
+  - [ ] Tamaño de texto configurable: Pequeño / Mediano / Grande (escala tipográfica global; el usuario percibe las letras muy pequeñas)
+  - [ ] Exportar/Importar TODOS los datos (clientes, préstamos, cuotas, pagos, historial) a Excel para migrar de PC
+  - [ ] Export automático a Excel con lapso ajustable (default mensual), con switch activar/desactivar en Configuración
 - [ ] Fase 7: Instalador (Inno Setup) + INSTALL.md + manual de usuario
 - [ ] Logout que regrese al login sin cerrar la app (hoy cierra la app — decisión pendiente)
 - [ ] Empaquetar fuente Inter .ttf (hoy usa fallback Segoe UI)
