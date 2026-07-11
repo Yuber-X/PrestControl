@@ -9,6 +9,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es/1.0.0/). Fechas en hor
 - **`scripts/db/003_crear_usuario_dedicado.sql`**: usuario MySQL `prestcontrol` con permisos mínimos (sin DELETE/DROP — la app usa soft deletes) para no correr como root donde el cliente.
 - **`docs/INSTALL.md`**: guía de instalación técnica paso a paso (MySQL, BD, usuario dedicado, config, checklist post-instalación, migración de PC, problemas comunes).
 - **`docs/MANUAL.md`**: manual del usuario final pantalla por pantalla, en lenguaje no técnico (pedido de Yuber), con la rutina de respaldo destacada y preguntas frecuentes.
+- **Ícono de la aplicación** (`Assets/prestcontrol.ico`): cuadrado redondeado indigo con la "P" del logo, 7 tamaños (16–256px). Se ve en el Explorador, la barra de tareas, las ventanas y el instalador — adiós al ícono de "app desconocida".
 
 ## [0.5.0] — 2026-07-10 · Fase 6 (Reportes, Historial, Configuración) + Notificador de vencimientos
 

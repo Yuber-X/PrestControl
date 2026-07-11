@@ -21,6 +21,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <!-- Ícono del ejecutable (Explorer, barra de tareas, ventanas) -->
+    <ApplicationIcon>Assets\prestcontrol.ico</ApplicationIcon>
   </PropertyGroup>
 
 </Project>

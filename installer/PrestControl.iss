@@ -27,6 +27,7 @@ PrivilegesRequired=admin
 WizardStyle=modern
 DisableProgramGroupPage=yes
 UninstallDisplayIcon={app}\{#AppExe}
+SetupIconFile=..\src\PrestControl.App\Assets\prestcontrol.ico
 
 [Languages]
 Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
