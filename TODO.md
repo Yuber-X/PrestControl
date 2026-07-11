@@ -63,11 +63,19 @@
       silenciado individual por cliente, activable en Configuración
 - Nota: los "6 reportes" del plan original quedaron como el único mockup diseñado — más tipos a definir con el cliente (BLOCKERS #7). Importar desde Excel descartado (BLOCKERS #8).
 
-## ⏳ Fase 7 (pendiente — cierre del proyecto)
-- [ ] Instalador (Inno Setup) + script de instalación de MySQL como dependencia
-- [ ] INSTALL.md + creación de usuario MySQL dedicado `prestcontrol` (no root)
-- [ ] **Documentación final detallada e increíblemente fácil de entender** (pedido explícito de Yuber): guía de uso pantalla por pantalla, lenguaje no técnico
-- [ ] Copiar el proyecto terminado a `Freelancer - Claude Save\` (instrucción de Yuber)
+## ✅ Fase 7 — Empaquetado y entrega (COMPLETA)
+- [x] `dotnet publish` self-contained win-x64 (no requiere .NET en la PC del cliente)
+- [x] Instalador Inno Setup 6 en español: `installer/Output/PrestControl_Setup_1.0.0.exe`
+- [x] `scripts/db/003_crear_usuario_dedicado.sql` (usuario `prestcontrol` con permisos mínimos)
+- [x] `docs/INSTALL.md` (guía técnica) + `docs/MANUAL.md` (manual no técnico pantalla por pantalla)
+- [x] Proyecto copiado a `Freelancer - Claude Save\`
+
+## 📌 Mejoras futuras (post-entrega, si el cliente las pide)
+- [ ] Logout que regrese al login sin cerrar la app (BLOCKERS #3)
+- [ ] Pago compensatorio negativo con UI propia (hoy: corrección asistida por técnico)
+- [ ] Más tipos de reportes (BLOCKERS #7)
+- [ ] Empaquetar fuente Inter .ttf (hoy usa fallback Segoe UI)
+- [ ] Datos del negocio (RNC, dirección, teléfono) configurables para el encabezado del recibo
 - [ ] Logout que regrese al login sin cerrar la app (hoy cierra la app — decisión pendiente)
 - [ ] Empaquetar fuente Inter .ttf (hoy usa fallback Segoe UI)
 - [ ] Sidebar: marcar el ítem activo cuando la navegación no viene de un click (detalle/nuevo)

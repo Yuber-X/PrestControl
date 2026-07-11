@@ -2,6 +2,14 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/1.0.0/). Fechas en hora de República Dominicana.
 
+## [1.0.0] — 2026-07-10 · Fase 7 (Empaquetado y entrega) — TODAS LAS FASES COMPLETAS
+
+### Added
+- **Instalador** `PrestControl_Setup_1.0.0.exe` (Inno Setup 6, español, 60 MB): app publicada **self-contained win-x64** (el cliente NO necesita instalar .NET), acceso directo, scripts de BD y documentación incluidos. El App.config no se pisa en actualizaciones; permisos de escritura para logs/ajustes.
+- **`scripts/db/003_crear_usuario_dedicado.sql`**: usuario MySQL `prestcontrol` con permisos mínimos (sin DELETE/DROP — la app usa soft deletes) para no correr como root donde el cliente.
+- **`docs/INSTALL.md`**: guía de instalación técnica paso a paso (MySQL, BD, usuario dedicado, config, checklist post-instalación, migración de PC, problemas comunes).
+- **`docs/MANUAL.md`**: manual del usuario final pantalla por pantalla, en lenguaje no técnico (pedido de Yuber), con la rutina de respaldo destacada y preguntas frecuentes.
+
 ## [0.5.0] — 2026-07-10 · Fase 6 (Reportes, Historial, Configuración) + Notificador de vencimientos
 
 ### Added
