@@ -18,7 +18,7 @@ public partial class App : Application
 {
     private ServiceProvider? _servicios;
 
-    protected override void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
@@ -26,6 +26,14 @@ public partial class App : Application
         _servicios = ConfigurarServicios();
 
         Log.Information("PrestControl iniciando");
+
+        // Sin base de datos operativa no se muestra ninguna ventana:
+        // diagnóstico con mensajes claros (y creación automática si falta)
+        if (!await PrepararBaseDatosAsync())
+        {
+            Shutdown();
+            return;
+        }
 
         var login = _servicios.GetRequiredService<LoginWindow>();
         var loginVm = _servicios.GetRequiredService<LoginViewModel>();
@@ -53,6 +61,67 @@ public partial class App : Application
         };
 
         login.Show();
+    }
+
+    /// <summary>
+    /// Diagnóstico previo al login. Los MessageBox van directo aquí (bootstrap,
+    /// capa UI, aún no hay ventanas): IDialogService es para los ViewModels.
+    /// Devuelve false cuando la app no debe continuar.
+    /// </summary>
+    private async Task<bool> PrepararBaseDatosAsync()
+    {
+        const string titulo = "PrestControl";
+        try
+        {
+            var verificador = _servicios!.GetRequiredService<VerificadorBaseDatos>();
+            switch (await verificador.VerificarAsync())
+            {
+                case EstadoBaseDatos.Lista:
+                    return true;
+
+                case EstadoBaseDatos.FaltaBaseDatos:
+                    var crear = MessageBox.Show(
+                        "La base de datos de PrestControl todavía no existe en este equipo.\n\n" +
+                        "¿Quieres crearla ahora? Toma solo unos segundos y no afecta nada más del sistema.",
+                        titulo + " — Primer arranque",
+                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+                    if (!crear)
+                        return false;
+
+                    await verificador.CrearEsquemaAsync();
+                    Log.Information("Base de datos creada automáticamente en el primer arranque");
+                    MessageBox.Show(
+                        "Base de datos creada correctamente. ¡Todo listo para empezar!",
+                        titulo, MessageBoxButton.OK, MessageBoxImage.Information);
+                    return true;
+
+                case EstadoBaseDatos.CredencialesInvalidas:
+                    MessageBox.Show(
+                        "MySQL rechazó el usuario o la contraseña configurados.\n\n" +
+                        "Revisa la cadena de conexión en PrestControl.App.dll.config " +
+                        "(paso 6 de la guía de instalación).",
+                        titulo, MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+
+                default: // SinServidor
+                    MessageBox.Show(
+                        "No se pudo conectar con MySQL.\n\n" +
+                        "Verifica que el servicio MySQL80 esté en ejecución " +
+                        "(services.msc → MySQL80 → Iniciar) y vuelve a abrir PrestControl.",
+                        titulo, MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Fallo preparando la base de datos al arrancar");
+            MessageBox.Show(
+                "No se pudo preparar la base de datos:\n\n" + ex.Message + "\n\n" +
+                "Si el usuario configurado no tiene permisos para crear bases de datos, " +
+                "ejecuta scripts\\db\\001_create_schema.sql como root (ver INSTALL.md).",
+                titulo, MessageBoxButton.OK, MessageBoxImage.Error);
+            return false;
+        }
     }
 
     protected override void OnExit(ExitEventArgs e)
@@ -94,6 +163,7 @@ public partial class App : Application
 
         // Data
         servicios.AddSingleton<ConexionFactory>();
+        servicios.AddSingleton<VerificadorBaseDatos>();
         servicios.AddSingleton<UsuarioRepository>();
         servicios.AddSingleton<SesionRepository>();
         servicios.AddSingleton<AuditoriaRepository>();

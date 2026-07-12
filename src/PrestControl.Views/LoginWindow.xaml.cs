@@ -19,7 +19,17 @@ public partial class LoginWindow : Window
         DataContext = vm;
         Loaded += async (_, _) =>
         {
-            await _vm.InicializarAsync();
+            // Defensa: una excepción sin capturar en un handler async void
+            // tumba la app entera (pasaba si la BD desaparecía tras el arranque)
+            try
+            {
+                await _vm.InicializarAsync();
+            }
+            catch (Exception ex)
+            {
+                Serilog.Log.Error(ex, "No se pudo verificar la cuenta inicial al cargar el login");
+                _vm.MensajeError = "No se pudo conectar con la base de datos.";
+            }
             if (_vm.EsWizardInicial)
             {
                 TituloContexto.Text = "Crea tu cuenta para empezar";

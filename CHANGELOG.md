@@ -2,6 +2,18 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/1.0.0/). Fechas en hora de República Dominicana.
 
+## [1.0.1] — 2026-07-11 · Arranque robusto sin base de datos + auto-aprovisionamiento
+
+### Fixed
+- **La app crasheaba al instante en una PC con MySQL pero sin la base de datos creada** (excepción sin capturar en el `Loaded` del login). Ahora el arranque diagnostica la conexión ANTES de mostrar ventanas y responde con mensajes claros: servicio MySQL detenido, credenciales rechazadas o base de datos inexistente.
+
+### Added
+- **Auto-aprovisionamiento del primer arranque**: si el servidor responde pero la BD no existe, la app ofrece crearla con un clic (schema completo embebido en el ensamblado — misma fuente que `scripts/db/001_create_schema.sql`). Verificado end-to-end: crear BD desde cero → wizard de cuenta → sesión operativa. Si el usuario MySQL configurado no tiene permiso CREATE (el dedicado `prestcontrol`, por diseño), el mensaje dirige al INSTALL.md.
+- `VerificadorBaseDatos` (Data) con diagnóstico `Lista/FaltaBaseDatos/CredencialesInvalidas/SinServidor` + 5 tests de integración nuevos (76 tests en total).
+
+### Seguridad
+- `App.config` versionado ahora lleva placeholders (`CAMBIAR_USUARIO`/`CAMBIAR_PASSWORD`): las credenciales locales de Dev ya no viven en el repositorio público (protegidas además con `git update-index --skip-worktree`).
+
 ## [1.0.0] — 2026-07-10 · Fase 7 (Empaquetado y entrega) — TODAS LAS FASES COMPLETAS
 
 ### Added

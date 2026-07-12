@@ -38,6 +38,12 @@ SOURCE C:/ruta/a/scripts/db/001_create_schema.sql;
 
 > `002_seed_data.sql` es SOLO para desarrollo (clientes de prueba) — **no ejecutarlo donde el cliente**.
 
+> 💡 **Alternativa (desde v1.0.1):** si la app arranca y la base de datos no existe,
+> ella misma ofrece crearla con un clic. Para eso la cadena de conexión debe tener
+> un usuario con permiso CREATE (root funciona; el usuario dedicado del paso 4 no,
+> por diseño). En instalaciones donde el cliente, lo recomendado sigue siendo este
+> paso manual y dejar configurado el usuario dedicado.
+
 ## 4. Crear el usuario dedicado (nunca usar root)
 
 1. Abrir `scripts\db\003_crear_usuario_dedicado.sql` en un editor.

@@ -10,10 +10,22 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- Esquema embebido para el auto-aprovisionamiento del primer arranque.
+         Única fuente de verdad: el mismo archivo de scripts/db/. -->
+    <EmbeddedResource Include="..\..\scripts\db\001_create_schema.sql"
+                      Link="001_create_schema.sql"
+                      LogicalName="PrestControl.Data.001_create_schema.sql" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="PrestControl.Data.Tests" />
+  </ItemGroup>
 
 </Project>

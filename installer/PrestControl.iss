@@ -6,7 +6,7 @@
 ; =============================================================
 
 #define AppNombre "PrestControl"
-#define AppVersion "1.0.0"
+#define AppVersion "1.0.1"
 #define AppEditor "Yuber Santana"
 #define AppExe "PrestControl.App.exe"
 
